@@ -1,4 +1,5 @@
 from ast import Return
+import parser
 from importlib.resources import contents
 from multiprocessing import context
 from django.shortcuts import render
@@ -28,7 +29,7 @@ def operaciones(request):
     return render(request, 'operaciones/operaciones.html')
 
 def respuestaoperaciones(request):
-    exprecion = (request.POST['num_1'] + request.POST['operaciones'] + request.POST['num_2']).compile()
+    exprecion = parser.expr(request.POST['num_1'] + request.POST['operaciones'] + request.POST['num_2']).compile()
     resultado = eval(exprecion)
     context = {
         'titulo' : 'Respuesta',
@@ -42,7 +43,7 @@ def cilindro(request):
     return render(request, 'cilindro/cilindro.html')
 
 def respuestacilindro(request):
-    exprecion = ("((" + request.POST['num_2'] + "/2)*2)" + request.POST['num_1']).compile()
+    exprecion = parser.expr("((" + request.POST['num_2'] + "/2)*2)" + request.POST['num_1']).compile()
     resultado = float(eval(exprecion)) * math.radians(180)
     
     context = {
